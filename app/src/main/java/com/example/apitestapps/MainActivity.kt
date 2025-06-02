@@ -1,6 +1,8 @@
 package com.example.apitestapps
 
 import android.R.attr.fontWeight
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.activity.ComponentActivity
@@ -56,6 +58,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -63,17 +66,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.example.apitestapps.ui.theme.APItestAppsTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             WindowMain(name = "")
+
+
+
+
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1337 && resultCode == RESULT_OK) {
+            connectVpn(this)
         }
     }
 }
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WindowMain(name: String, modifier: Modifier = Modifier) {
@@ -82,6 +101,7 @@ fun WindowMain(name: String, modifier: Modifier = Modifier) {
     var isSheetOpen by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -151,7 +171,14 @@ fun WindowMain(name: String, modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     OutlinedButton(
-                        onClick = { isConnected = !isConnected },
+                        onClick = { if (isConnected) {
+                            disconnectVpn()
+                        } else {
+                            prepareVpn(context as Activity) {
+                                connectVpn(context)
+                            }
+                        }
+                            isConnected = !isConnected },
                         modifier = Modifier
                             .size(290.dp)
                             .clip(CircleShape),
