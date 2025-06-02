@@ -16,11 +16,14 @@ include(":ics-openvpn:main")
 project(":ics-openvpn:main").projectDir = File("ics-openvpn/main")
 
 
+
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
