@@ -1,9 +1,12 @@
 package com.example.apitestapps
 
 import android.R.attr.fontWeight
+import android.R.attr.publicKey
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -70,27 +73,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.apitestapps.ui.theme.APItestAppsTheme
 
-class MainActivity : ComponentActivity() {
 
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             WindowMain(name = "")
-
-
-
-
-        }
-    }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1337 && resultCode == RESULT_OK) {
-            connectVpn(this)
         }
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -171,14 +162,10 @@ fun WindowMain(name: String, modifier: Modifier = Modifier) {
                     contentAlignment = Alignment.Center
                 ) {
                     OutlinedButton(
-                        onClick = { if (isConnected) {
-                            disconnectVpn()
-                        } else {
-                            prepareVpn(context as Activity) {
-                                connectVpn(context)
-                            }
-                        }
-                            isConnected = !isConnected },
+                        onClick = {
+                            isConnected = !isConnected
+
+                        },
                         modifier = Modifier
                             .size(290.dp)
                             .clip(CircleShape),

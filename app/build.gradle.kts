@@ -44,8 +44,6 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-
-    implementation ("com.github.schwabe:ics-openvpn:0.7.22")
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
